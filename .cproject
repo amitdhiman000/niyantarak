@@ -48,6 +48,7 @@
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="glib-2.0"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="X11"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="X11"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="glib-2.0"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.734805795" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -154,4 +155,5 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>
