@@ -14,47 +14,44 @@
 *
 * Dated : 24-02-2017
 * Author : Amit Dhiman <amitdhiman000@gmail.com>
-* Description : Mouse class implementation
+* Description : Debug macros
 */
+#ifndef __DEBUG_H__
+#define __DEBUG_H__
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include "Mouse.h"
-#include "Debug.h"
+#include <cstdio>
 
-namespace core {
+#define PRINT(fmt,args...) printf("%s:%s(%d) " fmt "\n", __FILE__, __PRETTY_FUNCTION__, __LINE__, ##args);
+#define APP_LOGV PRINT
+#define APP_LOGD PRINT
+#define APP_LOGI PRINT
+#define APP_LOGW PRINT
+#define APP_LOGE PRINT
 
-Mouse::Mouse(void)
-: mX(0)
-, mY(0)
-{
+#define RET_IF(COND) { \
+	if (COND) { \
+		return; \
+	} \
 }
 
-Mouse::~Mouse(void)
-{
+#define RETV_IF(COND,VAL) { \
+	if (COND) { \
+		return VAL; \
+	} \
 }
 
-void Mouse::move(int x, int y)
-{
-	moveMouse(x, y);
-	mX = x;
-	mY = y;
+#define RET_MSG_IF(COND,FMT,ARGS...) { \
+	if (COND) { \
+		LOGI(FMT,##ARGS); \
+		return; \
+	} \
 }
 
-void Mouse::moveMouse(int x, int y)
-{
-	APP_LOGV("");
-	Display *displayMain = XOpenDisplay(nullptr);
-
-	if(nullptr == displayMain)
-	{
-		APP_LOGE("Error Opening the Display !!!");
-		return;
-	}
-
-	XWarpPointer(displayMain, None, None, 0, 0, 0, 0, x, y);
-
-	//XCloseDisplay(displayMain);
+#define RETV_MSG_IF(COND,VAL,FMT,ARGS...) { \
+	if (COND) { \
+		LOGI(FMT,##ARGS); \
+		return VAL; \
+	} \
 }
 
-} /* end namespace core */
+#endif /* __DEBUG_H__ */

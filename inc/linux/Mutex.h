@@ -14,32 +14,42 @@
 *
 * Dated : 24-02-2017
 * Author : Amit Dhiman <amitdhiman000@gmail.com>
-* Description : Mouse class
+* Description : Mutex utility class
 */
 
-#ifndef __MOUSE_H__
-#define __MOUSE_H__
+#ifndef __AMU_LINUX_MUTEX_AMU__
+#define __AMU_LINUX_MUTEX_AMU__
 
-namespace core {
+class Mutex {
+	Mutex(void)
+	{
+		pthread_mutex_init(&mMutex, nullptr);
+	}
 
-class Mouse {
-public:
-	Mouse(void);
-	~Mouse(void);
+	~Mutex(void)
+	{
+		pthread_mutex_destroy(&mMutex);
+	}
 
-	void move(int x, int y);
+	bool lock(void)
+	{
+		return (0 == pthread_mutex_lock(&mMutex));
+	}
 
-	inline int getX(void) const { return mX; }
-	inline int getY(void) const { return mY; }
+	bool unlock(void)
+	{
+		return (0 == pthread_mutex_unlock(&mMutex));
+	}
+
+	bool trylock(void)
+	{
+		return (0 == pthread_mutex_trylock(&mMutex));
+	}
+
+	friend class Condition;
 
 private:
-	void moveMouse(int x, int y);
-
-private:
-	int mX;
-	int mY;
+	pthread_mutex_t mMutex;
 };
 
-} /* end namespace core */
-
-#endif /* __MOUSE_H__ */
+#endif /* __AMU_LINUX_MUTEX_AMU__ */
