@@ -17,29 +17,66 @@
 * Description : Mouse class
 */
 
-#ifndef __MOUSE_H__
-#define __MOUSE_H__
+#ifndef __MOUSE_AMU__
+#define __MOUSE_AMU__
 
-namespace core {
+#include "Config.h"
+#include "NDisplay.hpp"
+
+namespace CORE_NAMESPACE {
 
 class Mouse {
 public:
-	Mouse(void);
-	~Mouse(void);
+	Mouse(void)
+	: mX(0)
+	, mY(0)
+	{
+		mNDisplay = std::make_shared<NDisplay>();
+	}
 
-	void move(int x, int y);
+	Mouse(NDisplaySPtr pDisplay)
+	: mNDisplay(pDisplay)
+	, mX(0)
+	, mY(0)
+	{
+
+	}
+
+	~Mouse(void)
+	{
+	}
+
+	void move(int pX, int pY)
+	{
+		moveMouse(pX, pY);
+		mX = pX;
+		mY = pY;
+	}
 
 	inline int getX(void) const { return mX; }
 	inline int getY(void) const { return mY; }
 
 private:
-	void moveMouse(int x, int y);
+	void moveMouse(int pX, int pY)
+	{
+		APP_LOGV("");
+		if (mNDisplay) {
+			auto display = mNDisplay->getDisplay();
+			XSelectInput(display, mNDisplay->getRootWindow(), KeyReleaseMask);
+			XWarpPointer(display, None, mNDisplay->getRootWindow(), 0, 0, 0, 0, pX, pY);
+			XFlush(display);
+		} else {
+			APP_LOGE("no display object");
+		}
+	}
 
 private:
+	NDisplaySPtr mNDisplay;
 	int mX;
 	int mY;
 };
 
-} /* end namespace core */
+typedef std::shared_ptr<Mouse> MouseSPtr;
+} /* end CORE_NAMESPACE */
 
-#endif /* __MOUSE_H__ */
+#endif /* __MOUSE_AMU__ */

@@ -14,49 +14,47 @@
 *
 * Dated : 24-02-2017
 * Author : Amit Dhiman <amitdhiman000@gmail.com>
-* Description : Condition utility class
+* Description : Mutex utility class
 */
 
-#ifndef __AMU_LINUX_CONDITIONAL_AMU__
-#define __AMU_LINUX_CONDITIONAL_AMU__
+#ifndef __AMU_LINUX_MUTEX_AMU__
+#define __AMU_LINUX_MUTEX_AMU__
 
-#include "Mutex.h"
-
-class Condition {
-public:
-	Condition(void)
+class Mutex {
+	Mutex(void)
 	{
-		pthread_cond_init(&mCondition, nullptr);
+		pthread_mutex_init(&mMutex, nullptr);
 	}
 
-	~Condition(void)
+	~Mutex(void)
 	{
-		pthread_cond_destroy(&mCondition);
+		pthread_mutex_destroy(&mMutex);
 	}
 
-	bool wait(Mutex &mutex)
+	Mutex(const Mutex &) = delete;
+	Mutex(Mutex &&) = delete;
+	Mutex &operator=(const Mutex &) = delete;
+	Mutex &operator=(Mutex &&) = delete;
+
+	bool lock(void)
 	{
-		return (0 == pthread_cond_wait(&mCondition, &mutex.mMutex));
+		return (0 == pthread_mutex_lock(&mMutex));
 	}
 
-	bool wait(Mutex &mutex, unsigned time)
+	bool unlock(void)
 	{
-		return (0 == pthread_cond_timedwait(&mCondition, &mutex.mMutex, nullptr));
+		return (0 == pthread_mutex_unlock(&mMutex));
 	}
 
-	void notifyone(void)
+	bool trylock(void)
 	{
-		pthread_cond_signal(&mCondition);
+		return (0 == pthread_mutex_trylock(&mMutex));
 	}
 
-	void notifyall(void)
-	{
-		pthread_cond_broadcast(&mCondition);
-	}
+	friend class Condition;
 
 private:
-	pthread_cond_t mCondition;
+	pthread_mutex_t mMutex;
 };
 
-
-#endif /* __AMU_LINUX_CONDITIONAL_AMU__ */
+#endif /* __AMU_LINUX_MUTEX_AMU__ */

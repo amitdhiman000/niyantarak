@@ -14,47 +14,33 @@
 *
 * Dated : 24-02-2017
 * Author : Amit Dhiman <amitdhiman000@gmail.com>
-* Description : Mouse class implementation
+* Description : Exception classes
 */
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include "Mouse.h"
-#include "Debug.h"
+#include <string>
+#include <exception>
 
-namespace core {
-
-Mouse::Mouse(void)
-: mX(0)
-, mY(0)
-{
-}
-
-Mouse::~Mouse(void)
-{
-}
-
-void Mouse::move(int x, int y)
-{
-	moveMouse(x, y);
-	mX = x;
-	mY = y;
-}
-
-void Mouse::moveMouse(int x, int y)
-{
-	APP_LOGV("");
-	Display *displayMain = XOpenDisplay(nullptr);
-
-	if(nullptr == displayMain)
+class DisplayNotFoundException: public std::exception {
+public:
+	explicit DisplayNotFoundException(const char* msg)
+	: mErrorMsg(msg)
 	{
-		APP_LOGE("Error Opening the Display !!!");
-		return;
 	}
 
-	XWarpPointer(displayMain, None, None, 0, 0, 0, 0, x, y);
+	explicit DisplayNotFoundException(const std::string& msg)
+	: mErrorMsg(msg)
+	{
+	}
 
-	//XCloseDisplay(displayMain);
-}
+	virtual ~DisplayNotFoundException(void) throw()
+	{
+	}
 
-} /* end namespace core */
+	virtual const char* what(void) const throw()
+	{
+		return mErrorMsg.c_str();
+	}
+
+protected:
+	std::string mErrorMsg;
+};

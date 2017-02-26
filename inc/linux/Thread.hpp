@@ -18,8 +18,8 @@
 */
 
 
-#ifndef __AMU_LINUX_THREAD_AMU__
-#define __AMU_LINUX_THREAD_AMU__
+#ifndef __LINUX_THREAD_AMU__
+#define __LINUX_THREAD_AMU__
 
 #include <Debug.h>
 #include <pthread.h>
@@ -38,6 +38,11 @@ public:
 	{
 		//mThreadHandle = 0;
 	}
+
+	Thread(const Thread &) = delete;
+	Thread(Thread &&) = delete;
+	Thread &operator=(const Thread &) = delete;
+	Thread &operator=(Thread &&) = delete;
 
 	bool start(void)
 	{
@@ -80,4 +85,4 @@ private:
 	pthread_t mThreadHandle;
 };
 
-#endif /* __AMU_LINUX_THREAD_AMU__ */
+#endif /* __LINUX_THREAD_AMU__ */

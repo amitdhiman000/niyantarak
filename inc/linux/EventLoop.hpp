@@ -17,8 +17,8 @@
 * Description : Event loop utility class
 */
 
-#ifndef __AMU_LINUX_EVENT_LOOP_H__
-#define __AMU_LINUX_EVENT_LOOP_H__
+#ifndef __LINUX_EVENT_LOOP_AMU__
+#define __LINUX_EVENT_LOOP_AMU__
 
 #include <glib.h>
 
@@ -32,6 +32,11 @@ public:
 	{
 		stop();
 	}
+
+	EventLoop(const EventLoop &) = delete;
+	EventLoop(EventLoop &&) = delete;
+	EventLoop &operator=(const EventLoop &) = delete;
+	EventLoop &operator=(EventLoop &&) = delete;
 
 	bool start(void)
 	{
@@ -83,4 +88,4 @@ private:
 	GMainLoop *mLoop;
 };
 
-#endif /* __AMU_LINUX_EVENT_LOOP_H__ */
+#endif /* __LINUX_EVENT_LOOP_AMU__ */
