@@ -19,10 +19,18 @@
 #ifndef __DEBUG_AMU__
 #define __DEBUG_AMU__
 
+#include "Config.h"
+#include <cstring>
 #include <cstdio>
 
 #define FILENAME (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-#define PRINT(fmt,args...) printf("%s:%s(%d) " fmt "\n", FILENAME, __PRETTY_FUNCTION__, __LINE__, ##args);
+#if LINUX
+#define PRINT(fmt,args...) printf("%s=> %s(%d) " fmt "\n", FILENAME, __FUNCTION__, __LINE__, ##args);
+#endif
+#if WINDOWS
+#define PRINT(fmt,...) printf("%s=> %s(%d) " fmt "\n", FILENAME, __FUNCTION__, __LINE__, ##__VA_ARGS__);
+#endif
+
 #define APP_LOGV PRINT
 #define APP_LOGD PRINT
 #define APP_LOGI PRINT
@@ -43,14 +51,14 @@
 
 #define RET_MSG_IF(COND,FMT,ARGS...) { \
 	if (COND) { \
-		APP_LOGI(FMT,##ARGS); \
+		APP_LOGI(FMT, ##ARGS); \
 		return; \
 	} \
 }
 
 #define RETV_MSG_IF(COND,VAL,FMT,ARGS...) { \
 	if (COND) { \
-		APP_LOGI(FMT,##ARGS); \
+		APP_LOGI(FMT, ##ARGS); \
 		return VAL; \
 	} \
 }

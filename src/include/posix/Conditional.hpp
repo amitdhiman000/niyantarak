@@ -20,7 +20,9 @@
 #ifndef __LINUX_CONDITIONAL_AMU__
 #define __LINUX_CONDITIONAL_AMU__
 
-#include <linux/Mutex.hpp>
+#include "linux/Mutex.hpp"
+
+namespace posix {
 
 class Condition {
 public:
@@ -63,5 +65,6 @@ private:
 	pthread_cond_t mCondition;
 };
 
+} // ends namespace posix
 
 #endif /* __LINUX_CONDITIONAL_AMU__ */

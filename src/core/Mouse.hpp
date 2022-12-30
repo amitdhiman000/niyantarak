@@ -20,10 +20,12 @@
 #ifndef __MOUSE_AMU__
 #define __MOUSE_AMU__
 
-#include "Config.h"
-#include "NDisplay.hpp"
 
-namespace CORE_NAMESPACE {
+#include <fwd/CoreFwd.h>
+#include "Config.h"
+#include "core/PlatformDisplay.hpp"
+
+namespace NAMESPACE_CORE {
 
 class Mouse {
 public:
@@ -31,11 +33,11 @@ public:
 	: mX(0)
 	, mY(0)
 	{
-		mNDisplay = std::make_shared<NDisplay>();
+		mDisplay = std::make_shared<PlatformDisplay>();
 	}
 
-	Mouse(NDisplaySPtr pDisplay)
-	: mNDisplay(pDisplay)
+	Mouse(PlatformDisplaySPtr pDisplay)
+	: mDisplay(pDisplay)
 	, mX(0)
 	, mY(0)
 	{
@@ -60,10 +62,11 @@ private:
 	void moveMouse(int pX, int pY)
 	{
 		APP_LOGV("");
-		if (mNDisplay) {
-			auto display = mNDisplay->getDisplay();
-			XSelectInput(display, mNDisplay->getRootWindow(), KeyReleaseMask);
-			XWarpPointer(display, None, mNDisplay->getRootWindow(), 0, 0, 0, 0, pX, pY);
+		if (mDisplay)
+		{
+			auto display = mDisplay->getDisplay();
+			XSelectInput(display, mDisplay->getRootWindow(), KeyReleaseMask);
+			XWarpPointer(display, None, mDisplay->getRootWindow(), 0, 0, 0, 0, pX, pY);
 			XFlush(display);
 		} else {
 			APP_LOGE("no display object");
@@ -71,12 +74,11 @@ private:
 	}
 
 private:
-	NDisplaySPtr mNDisplay;
-	int mX;
-	int mY;
+	PlatformDisplaySPtr mDisplay;
+	std::int32_t mX;
+	std::int32_t mY;
 };
 
-typedef std::shared_ptr<Mouse> MouseSPtr;
 } /* end CORE_NAMESPACE */
 
 #endif /* __MOUSE_AMU__ */

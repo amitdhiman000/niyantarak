@@ -19,17 +19,12 @@
 
 #include <sys/signal.h>
 
-#include "linux/EventLoop.hpp"
-#include "core/DisplayController.hpp"
-
 #include "Config.h"
 #include "Debug.h"
+#include "App.h"
 
 #define __CATCH_SIGNAL 0
 
-using namespace CORE_NAMESPACE;
-
-static EventLoop sEventLoop;
 
 #if __CATCH_SIGNAL
 void signalHandler(int signum)
@@ -39,7 +34,7 @@ void signalHandler(int signum)
 }
 #endif
 
-int main(void)
+int main(int argc, char* argv[])
 {
 	APP_LOGI("");
 
@@ -56,10 +51,10 @@ int main(void)
 	sigaction(SIGTERM, &newAction, nullptr);
 #endif
 
-	DisplayController controller;
-	controller.start();
+	App app;
+	app.init(argc, argv);
+	app.run();
 
-	sEventLoop.start();
 	APP_LOGD("Done");
 	return 0;
 }

@@ -18,12 +18,14 @@
 */
 
 
-#ifndef __LINUX_THREAD_AMU__
-#define __LINUX_THREAD_AMU__
+#ifndef __POSIX_THREAD_AMU__
+#define __POSIX_THREAD_AMU__
 
-#include <Debug.h>
 #include <pthread.h>
 #include <functional>
+#include "Debug.h"
+
+namespace posix {
 
 class Thread {
 public:
@@ -85,4 +87,6 @@ private:
 	pthread_t mThreadHandle;
 };
 
-#endif /* __LINUX_THREAD_AMU__ */
+} // ends namespace posix
+
+#endif /* __POSIX_THREAD_AMU__ */

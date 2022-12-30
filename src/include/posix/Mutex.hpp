@@ -17,8 +17,10 @@
 * Description : Mutex utility class
 */
 
-#ifndef __AMU_LINUX_MUTEX_AMU__
-#define __AMU_LINUX_MUTEX_AMU__
+#ifndef __POSIX_MUTEX_AMU__
+#define __POSIX_MUTEX_AMU__
+
+namespace posix {
 
 class Mutex {
 	Mutex(void)
@@ -57,4 +59,6 @@ private:
 	pthread_mutex_t mMutex;
 };
 
-#endif /* __AMU_LINUX_MUTEX_AMU__ */
+} // ends namespace posix
+
+#endif /* __POSIX_MUTEX_AMU__ */
